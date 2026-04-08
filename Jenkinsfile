@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Fetch Code'){
             steps{
-                sh 'git branch: "main" url: "https://github.com/Shadab909/atom-project-app.git"'
+                git branch: 'main', url: 'https://github.com/Shadab909/atom-project-app.git'
             }
         }
         stage('Build'){
@@ -54,18 +54,23 @@ pipeline {
         stage('Build App Image with Docker'){
             steps{
                 script{
-                    dockerImage = docker.build(imageName + "$BUILD_NUMBER", "./Dockerfile")
+                    dockerImage = docker.build(imageName + "$BUILD_NUMBER", ".")
                 }
             }
         }
         stage('Upload Image to ECR'){
             steps{
                 script{
-                    docker.withDockerRegistry(ecrRegistry,registryCredentials){
+                    docker.withRegistry(ecrRegistry,registryCredential){
                         dockerImage.push("$BUILD_NUMBER")
                         dockerImage.push("latest")
                     }
                 }
+            }
+        }
+        stage('Remove Container from Local'){
+            steps{
+                sh 'docker rmi -f $(docker images -aq)'
             }
         }
     }
