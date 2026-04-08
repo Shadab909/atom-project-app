@@ -1,12 +1,14 @@
 pipeline {
     agent any
-    tools{
-        maven = "MAVEN3.9"
-        jdk = "JDK17"
+    environment{
         sonarScanner = tool 'SONAR6.2'
         registryCredential = 'ecr:us-east-1:jenkinsecrcreds'
         imageName = "596517178703.dkr.ecr.us-east-1.amazonaws.com/atomecrrepo"
         ecrRegistry = "https://596517178703.dkr.ecr.us-east-1.amazonaws.com"
+    }
+    tools{
+        maven = "MAVEN3.9"
+        jdk = "JDK17"
     }
     stages {
         stage('Fetch Code'){
