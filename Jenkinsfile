@@ -7,8 +7,8 @@ pipeline {
         ecrRegistry = "https://596517178703.dkr.ecr.us-east-1.amazonaws.com"
     }
     tools{
-        maven = "MAVEN3.9"
-        jdk = "JDK17"
+        maven "MAVEN3.9"
+        jdk "JDK17"
     }
     stages {
         stage('Fetch Code'){
