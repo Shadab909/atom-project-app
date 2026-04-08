@@ -40,7 +40,7 @@ pipeline {
         stage('SonarQube Code Analysis'){
             steps{
                 withSonarQubeEnv('SONAR-SERVER'){
-                    sh '''${sonarScanner}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+                    sh '''${sonarScanner}/bin/sonar-scanner -Dsonar.projectKey=atom-project \
                    -Dsonar.projectName=atom-project \
                    -Dsonar.projectVersion=1.0 \
                    -Dsonar.sources=src/ \
@@ -54,7 +54,7 @@ pipeline {
         stage('Build App Image with Docker'){
             steps{
                 script{
-                    dockerImage = docker.build(imageName + "$BUILD_NUMBER", ".")
+                    dockerImage = docker.build(imageName + ":$BUILD_NUMBER", ".")
                 }
             }
         }
